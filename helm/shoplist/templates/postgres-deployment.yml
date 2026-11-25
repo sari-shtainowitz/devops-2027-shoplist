@@ -25,6 +25,13 @@ spec:
                 name: postgres-init       # name of the ConfigMap (postgres-configmap.yml)
           ports:
             - containerPort: 5432   # postgres port
+          resources:
+            requests:
+              cpu: {{ .Values.postgres.resources.requests.cpu | quote }}
+              memory: {{ .Values.postgres.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.postgres.resources.limits.cpu | quote }}
+              memory: {{ .Values.postgres.resources.limits.memory }}
           readinessProbe:
             exec:
               command: ["pg_isready", "-U", {{ .Values.postgres.user | quote }}, "-d", {{ .Values.postgres.database | quote }}]   # user and database from the Secret, plain text
